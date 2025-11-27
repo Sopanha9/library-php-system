@@ -2,93 +2,92 @@
 session_start();
 require_once '../config/db.php';
 
-// Protection
 if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'librarian'])) {
-    header("Location: ../auth/login.php");
+    header("Location: " . url('auth/login.php'));
     exit();
 }
 
-include '../includes/header.php';
-
-// Real-time stats
-$total_books     = $pdo->query("SELECT SUM(total_quantity) FROM books")->fetchColumn();
-$available_books = $pdo->query("SELECT SUM(available_quantity) FROM books")->fetchColumn();
-$total_members   = $pdo->query("SELECT COUNT(*) FROM members")->fetchColumn();
-$issued_today    = $pdo->query("SELECT COUNT(*) FROM issued_books WHERE issue_date = CURDATE()")->fetchColumn();
-$overdue         = $pdo->query("SELECT COUNT(*) FROM issued_books WHERE due_date < CURDATE() AND status = 'Issued'")->fetchColumn();
-$total_fine      = $pdo->query("SELECT SUM(fine_amount) FROM issued_books WHERE fine_amount > 0")->fetchColumn(0);
+// Your stats queries here (same as before)
+$total_books = $pdo->query("SELECT SUM(total_quantity) FROM books")->fetchColumn() ?? 0;
+$available   = $pdo->query("SELECT SUM(available_quantity) FROM books")->fetchColumn() ?? 0;
+$members     = $pdo->query("SELECT COUNT(*) FROM members")->fetchColumn();
+$issued_today = $pdo->query("SELECT COUNT(*) FROM issued_books WHERE DATE(issue_date) = CURDATE()")->fetchColumn();
+$overdue     = $pdo->query("SELECT COUNT(*) FROM issued_books WHERE due_date < CURDATE() AND status='Issued'")->fetchColumn();
+$total_fine  = $pdo->query("SELECT SUM(fine_amount) FROM issued_books")->fetchColumn() ?? 0;
 ?>
 
-<div class="d-flex">
-  <?php include '../includes/sidebar.php'; ?>
+<?php include '../includes/header.php'; ?>
+<?php include '../includes/sidebar.php'; ?>
 
-  <div class="flex-grow-1 p-4">
-    <h2>Welcome back, <?= htmlspecialchars($_SESSION['username']) ?>!</h2>
-    <p class="text-muted">Role: <strong><?= ucfirst($_SESSION['role']) ?></strong></p>
-    <hr>
+<main class="ml-64 p-8 flex-1">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-800">Welcome back, <?= htmlspecialchars($_SESSION['username']) ?>!</h1>
+    <p class="text-xl text-indigo-600 font-semibold mt-2">Role: <?= ucfirst($_SESSION['role']) ?></p>
+  </div>
 
-    <!-- Stats Cards -->
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card stat-card bg-primary text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-book"></i> Total Books</h5>
-            <h2><?= $total_books ?? 0 ?></h2>
-          </div>
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+    <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <div class="flex justify-between items-center">
+        <div>
+          <p class="text-blue-100 text-lg">Total Books</p>
+          <p class="text-5xl font-extrabold mt-3"><?= $total_books ?></p>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card stat-card bg-success text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-check-circle"></i> Available</h5>
-            <h2><?= $available_books ?? 0 ?></h2>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card stat-card bg-info text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-users"></i> Total Members</h5>
-            <h2><?= $total_members ?></h2>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card stat-card bg-warning text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-clock"></i> Issued Today</h5>
-            <h2><?= $issued_today ?></h2>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card stat-card bg-danger text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-exclamation"></i> Overdue Books</h5>
-            <h2><?= $overdue ?></h2>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card stat-card bg-dark text-white">
-          <div class="card-body">
-            <h5><i class="fas fa-dollar-sign"></i> Total Fine (Riel)</h5>
-            <h2><?= number_format($total_fine ?? 0) ?></h2>
-          </div>
-        </div>
+        <i class="fas fa-book-open text-7xl opacity-30"></i>
       </div>
     </div>
 
-    <div class="mt-5">
-      <h3>Quick Actions</h3>
-      <div class="row g-3">
-        <div class="col-md-3"><a href="../books/manage.php" class="btn btn-primary w-100 p-3"><i class="fas fa-plus"></i> Add New Book</a></div>
-        <div class="col-md-3"><a href="../members/register.php" class="btn btn-success w-100 p-3"><i class="fas fa-user-plus"></i> Register Member</a></div>
-        <div class="col-md-3"><a href="../issue/issue_book.php" class="btn btn-warning w-100 p-3"><i class="fas fa-exchange-alt"></i> Issue Book Now</a></div>
-        <div class="col-md-3"><a href="../reports/overdue.php" class="btn btn-danger w-100 p-3"><i class="fas fa-bell"></i> View Overdue</a></div>
-      </div>
+    <div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <p class="text-green-100 text-lg">Available</p>
+      <p class="text-5xl font-extrabold mt-3"><?= $available ?></p>
+      <i class="fas fa-check-circle text-7xl opacity-30"></i>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-500 to-pink-600 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <p class="text-purple-100 text-lg">Total Members</p>
+      <p class="text-5xl font-extrabold mt-3"><?= $members ?></p>
+      <i class="fas fa-users text-7xl opacity-30"></i>
+    </div>
+
+    <div class="bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <p class="text-yellow-100 text-lg">Issued Today</p>
+      <p class="text-5xl font-extrabold mt-3"><?= $issued_today ?></p>
+      <i class="fas fa-clock text-7xl opacity-30"></i>
+    </div>
+
+    <div class="bg-gradient-to-br from-red-500 to-rose-600 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <p class="text-red-100 text-lg">Overdue Books</p>
+      <p class="text-5xl font-extrabold mt-3"><?= $overdue ?></p>
+      <i class="fas fa-bell text-7xl opacity-30"></i>
+    </div>
+
+    <div class="bg-gradient-to-br from-gray-700 to-gray-900 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition">
+      <p class="text-gray-300 text-lg">Total Fine</p>
+      <p class="text-5xl font-extrabold mt-3"><?= number_format($total_fine) ?> ៛</p>
+      <i class="fas fa-coins text-7xl opacity-30"></i>
     </div>
   </div>
-</div>
+
+  <!-- Quick Actions -->
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <a href="<?= url('books/manage.php') ?>" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-700 hover:to-purple-700 text-white p-10 rounded-2xl text-center shadow-2xl transform hover:scale-110 transition">
+      <i class="fas fa-plus text-5xl mb-4"></i>
+      <p class="text-xl font-bold">Add Book</p>
+    </a>
+    <a href="<?= url('auth/register_member.php') ?>" class="bg-gradient-to-r from-green-600 to-teal-600 hover:from-teal-700 hover:to-green-700 text-white p-10 rounded-2xl text-center shadow-2xl transform hover:scale-110 transition">
+      <i class="fas fa-user-plus text-5xl mb-4"></i>
+      <p class="text-xl font-bold">New Member</p>
+    </a>
+    <a href="<?= url('issue/issue_book.php') ?>" class="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-orange-700 hover:to-red-600 text-white p-10 rounded-2xl text-center shadow-2xl transform hover:scale-110 transition">
+      <i class="fas fa-exchange-alt text-5xl mb-4"></i>
+      <p class="text-xl font-bold">Issue Book</p>
+    </a>
+    <a href="<?= url('reports/overdue.php') ?>" class="bg-gradient-to-r from-red-600 to-rose-700 hover:from-rose-700 hover:to-pink-700 text-white p-10 rounded-2xl text-center shadow-2xl transform hover:scale-110 transition">
+      <i class="fas fa-exclamation-circle text-5xl mb-4"></i>
+      <p class="text-xl font-bold">Overdue List</p>
+    </a>
+  </div>
+</main>
 
 <?php include '../includes/footer.php'; ?>
