@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SweetAlert2 Glassmorphism Demo - Library System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+      * {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+        min-height: 100vh;
+      }
+
+      /* SweetAlert2 Glassmorphism */
+      .swal2-popup {
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 20px !important;
+      }
+
+      .swal2-title {
+        color: #1f2937 !important;
+        font-weight: 700 !important;
+        font-size: 1.5rem !important;
+      }
+
+      .swal2-html-container {
+        color: #4b5563 !important;
+        font-size: 1rem !important;
+      }
+
+      .swal2-confirm {
+        background: linear-gradient(
+          135deg,
+          #0a84ff 0%,
+          #5e5ce6 100%
+        ) !important;
+        box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 12px 32px !important;
+        font-weight: 600 !important;
+        border: none !important;
+      }
+
+      .swal2-confirm:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(10, 132, 255, 0.4) !important;
+      }
+
+      .swal2-cancel {
+        background: rgba(255, 255, 255, 0.7) !important;
+        backdrop-filter: blur(10px) !important;
+        color: #4b5563 !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 12px 32px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+      }
+
+      .swal2-cancel:hover {
+        background: rgba(255, 255, 255, 0.9) !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+      }
+
+      .btn-demo {
+        background: linear-gradient(135deg, #0a84ff 0%, #5e5ce6 100%);
+        box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 12px 24px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-demo:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(10, 132, 255, 0.4);
+      }
+    </style>
+  </head>
+  <body class="p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4 text-center">
+        <i class="fas fa-sparkles text-blue-500 mr-3"></i>
+        SweetAlert2 Glassmorphism Demo
+      </h1>
+      <p class="text-gray-600 text-center mb-12">
+        Library Management System - Custom Alert Styles
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Success Alert -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"
+            >
+              <i class="fas fa-check-circle text-2xl text-green-600"></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">Success Alert</h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            For successful operations like adding books, members, or processing
+            returns.
+          </p>
+          <button onclick="showSuccess()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Success
+          </button>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"
+            >
+              <i class="fas fa-times-circle text-2xl text-red-600"></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">Error Alert</h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            When operations fail or validation errors occur.
+          </p>
+          <button onclick="showError()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Error
+          </button>
+        </div>
+
+        <!-- Warning/Confirm -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center"
+            >
+              <i
+                class="fas fa-exclamation-triangle text-2xl text-orange-600"
+              ></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">Confirm Dialog</h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            For destructive actions like delete operations.
+          </p>
+          <button onclick="showConfirm()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Confirm
+          </button>
+        </div>
+
+        <!-- Info Alert -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+            >
+              <i class="fas fa-info-circle text-2xl text-blue-600"></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">Info Alert</h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            For informational messages and tips.
+          </p>
+          <button onclick="showInfo()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Info
+          </button>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"
+            >
+              <i class="fas fa-bell text-2xl text-purple-600"></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">
+              Toast Notification
+            </h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            Quick non-blocking notifications that auto-dismiss.
+          </p>
+          <button onclick="showToast()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Toast
+          </button>
+        </div>
+
+        <!-- Question Dialog -->
+        <div class="glass p-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center"
+            >
+              <i class="fas fa-question-circle text-2xl text-indigo-600"></i>
+            </div>
+            <h3 class="ml-3 text-lg font-bold text-gray-800">
+              Question Dialog
+            </h3>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">
+            For status changes and member actions.
+          </p>
+          <button onclick="showQuestion()" class="btn-demo w-full">
+            <i class="fas fa-play mr-2"></i>Show Question
+          </button>
+        </div>
+      </div>
+
+      <!-- Implementation Examples -->
+      <div class="glass p-8 mt-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fas fa-code text-blue-500 mr-3"></i>
+          Implementation Examples
+        </h2>
+
+        <div class="space-y-6">
+          <!-- Example 1 -->
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-2">
+              1. Delete Book Confirmation
+            </h3>
+            <pre
+              class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+            ><code>Swal.fire({
+  title: 'Delete Book?',
+  text: 'This action cannot be undone.',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'Cancel',
+  reverseButtons: true
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Perform delete action
+    Swal.fire('Deleted!', 'Book has been deleted.', 'success');
+  }
+});</code></pre>
+          </div>
+
+          <!-- Example 2 -->
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-2">
+              2. Success Toast Notification
+            </h3>
+            <pre
+              class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+            ><code>const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true
+});
+
+Toast.fire({
+  icon: 'success',
+  title: 'Book Added Successfully!'
+});</code></pre>
+          </div>
+
+          <!-- Example 3 -->
+          <div>
+            <h3 class="font-semibold text-gray-800 mb-2">
+              3. Error with Detailed Message
+            </h3>
+            <pre
+              class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+            ><code>Swal.fire({
+  icon: 'error',
+  title: 'Issue Failed',
+  text: 'Member has reached maximum book limit (5 books).',
+  confirmButtonText: 'OK'
+});</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features List -->
+      <div class="glass p-8 mt-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fas fa-star text-yellow-500 mr-3"></i>
+          Glassmorphism Features
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">Frosted Glass Effect</p>
+              <p class="text-sm text-gray-600">
+                Semi-transparent with blur backdrop
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">iOS-Inspired Design</p>
+              <p class="text-sm text-gray-600">Modern Apple design language</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">Blue Gradient Buttons</p>
+              <p class="text-sm text-gray-600">Consistent with system theme</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">Smooth Animations</p>
+              <p class="text-sm text-gray-600">Hover effects and transitions</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">Toast Notifications</p>
+              <p class="text-sm text-gray-600">Non-blocking quick alerts</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+            <div>
+              <p class="font-semibold text-gray-800">Accessible</p>
+              <p class="text-sm text-gray-600">Keyboard navigation support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Success Alert
+      function showSuccess() {
+        Swal.fire({
+          icon: "success",
+          title: "Book Added Successfully!",
+          text: "The Great Gatsby has been added to the library collection.",
+          confirmButtonText: "Great!",
+        });
+      }
+
+      // Error Alert
+      function showError() {
+        Swal.fire({
+          icon: "error",
+          title: "Operation Failed",
+          text: "Unable to process request. Member has outstanding fines of 25.00 Riel.",
+          confirmButtonText: "OK",
+        });
+      }
+
+      // Confirm Dialog
+      function showConfirm() {
+        Swal.fire({
+          title: "Delete Member?",
+          text: "This action cannot be undone. All member data will be permanently removed.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "Member has been removed from the system.",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
+
+      // Info Alert
+      function showInfo() {
+        Swal.fire({
+          icon: "info",
+          title: "Library Settings",
+          text: "Default borrow period is 14 days. Fine per day is 1.00 Riel after grace period.",
+          confirmButtonText: "Got it",
+        });
+      }
+
+      // Toast Notification
+      function showToast() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Status Updated!",
+          text: "Member status changed to Active",
+        });
+      }
+
+      // Question Dialog
+      function showQuestion() {
+        Swal.fire({
+          title: "Suspend Member?",
+          text: "Are you sure you want to suspend this member?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Yes, suspend!",
+          cancelButtonText: "Cancel",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            });
+
+            Toast.fire({
+              icon: "success",
+              title: "Member Suspended!",
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
