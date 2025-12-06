@@ -264,26 +264,32 @@ document.getElementById('memberSearch').addEventListener('input', function() {
         if (data.length === 0) {
           resultsDiv.innerHTML = '<div class="p-4 text-center text-gray-500">No members found</div>';
         } else {
-          resultsDiv.innerHTML = data.map(member => `
-            <div onclick='selectMember(${JSON.stringify(member)})' 
-                 class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors">
-              <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                  ${member.full_name.charAt(0)}
-                </div>
-                <div class="flex-1">
-                  <h4 class="font-semibold text-gray-800">${member.full_name}</h4>
-                  <p class="text-xs text-gray-600">${member.email} • ${member.phone}</p>
-                  <div class="flex items-center gap-2 mt-1">
-                    <span class="text-xs px-2 py-0.5 rounded ${member.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                      ${member.status}
-                    </span>
-                    <span class="text-xs text-gray-500">Books: ${member.current_borrows}/${member.max_books_allowed}</span>
+          resultsDiv.innerHTML = data.map(member => {
+            const photoHtml = member.profile_photo 
+              ? `<img src="../uploads/members/${member.profile_photo}" class="w-full h-full object-cover" alt="${member.full_name}">`
+              : `<div class="w-full h-full flex items-center justify-center font-semibold">${member.full_name.charAt(0)}</div>`;
+            
+            return `
+              <div onclick='selectMember(${JSON.stringify(member)})' 
+                   class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 rounded-full bg-indigo-600 overflow-hidden flex items-center justify-center text-white text-sm">
+                    ${photoHtml}
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-800">${member.full_name}</h4>
+                    <p class="text-xs text-gray-600">${member.email} • ${member.phone}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span class="text-xs px-2 py-0.5 rounded ${member.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                        ${member.status}
+                      </span>
+                      <span class="text-xs text-gray-500">Books: ${member.current_borrows}/${member.max_books_allowed}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
         
         resultsDiv.classList.remove('hidden');
@@ -350,7 +356,12 @@ function selectMember(member) {
   document.getElementById('memberSearch').value = '';
   document.getElementById('memberResults').classList.add('hidden');
   
-  document.getElementById('memberPhoto').textContent = member.full_name.charAt(0);
+  const photoDiv = document.getElementById('memberPhoto');
+  if (member.profile_photo) {
+    photoDiv.innerHTML = `<img src="../uploads/members/${member.profile_photo}" class="w-full h-full object-cover rounded-full" alt="${member.full_name}">`;
+  } else {
+    photoDiv.textContent = member.full_name.charAt(0);
+  }
   document.getElementById('memberName').textContent = member.full_name;
   document.getElementById('memberInfo').textContent = `${member.email} • ${member.phone}`;
   document.getElementById('memberBorrows').textContent = `Currently borrowed: ${member.current_borrows}/${member.max_books_allowed} books`;

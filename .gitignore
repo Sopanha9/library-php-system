@@ -1,0 +1,67 @@
+# Database Configuration (contains sensitive credentials)
+config/db.php
+
+# Uploaded Files (user-generated content)
+uploads/
+uploads/books/*
+uploads/members/*
+!uploads/.gitkeep
+
+# Temporary and cache files
+*.log
+*.tmp
+*.cache
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# PHPStorm
+.idea/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files (if you have any)
+test_*.php
+test/
+tests/
+
+# Node modules (if you add any JavaScript tooling later)
+node_modules/
+
+# Composer vendor (if you add composer later)
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# SQL dumps and database backups
+*.sql
+!database_members.sql
+!database_update.sql
+
+# Documentation you don't want to share
+showProject.txt
+SWEETALERT_GUIDE.txt
+FEATURES_PLAN.txt
+fix_fine_payments_table.sql
+test_insert.php
+sweetalert_demo.html

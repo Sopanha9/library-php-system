@@ -29,7 +29,8 @@ try {
                 b.cover_image,
                 m.full_name as member_name,
                 m.email as member_email,
-                m.phone as member_phone
+                m.phone as member_phone,
+                m.profile_photo
             FROM issued_books ib
             JOIN books b ON ib.book_id = b.book_id
             JOIN members m ON ib.member_id = m.member_id
@@ -103,19 +104,33 @@ try {
                         
                         <!-- Member Info -->
                         <div class="bg-white/70 rounded-lg p-3 mb-3">
-                            <div class="grid grid-cols-2 gap-3 text-sm">
-                                <div class="flex items-center">
-                                    <i class="fas fa-user text-indigo-600 mr-2 w-4"></i>
-                                    <span class="font-semibold"><?= htmlspecialchars($book['member_name']) ?></span>
+                            <div class="flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-indigo-200">
+                                    <?php if ($book['profile_photo'] && file_exists(__DIR__ . '/../uploads/members/' . $book['profile_photo'])): ?>
+                                        <img src="../uploads/members/<?= htmlspecialchars($book['profile_photo']) ?>" 
+                                             class="w-full h-full object-cover" alt="Member">
+                                    <?php else: ?>
+                                        <div class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                                            <?= strtoupper(substr($book['member_name'], 0, 1)) ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-envelope text-indigo-600 mr-2 w-4"></i>
-                                    <span class="text-gray-600"><?= htmlspecialchars($book['member_email']) ?></span>
+                                <div class="flex-1 grid grid-cols-2 gap-3 text-sm">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user text-indigo-600 mr-2 w-4"></i>
+                                        <span class="font-semibold"><?= htmlspecialchars($book['member_name']) ?></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-envelope text-indigo-600 mr-2 w-4"></i>
+                                        <span class="text-gray-600"><?= htmlspecialchars($book['member_email']) ?></span>
+                                    </div>
+                                    <div class="flex items-center col-span-2">
+                                        <i class="fas fa-phone text-indigo-600 mr-2 w-4"></i>
+                                        <span class="text-gray-600"><?= htmlspecialchars($book['member_phone']) ?></span>
+                                    </div>
                                 </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-phone text-indigo-600 mr-2 w-4"></i>
-                                    <span class="text-gray-600"><?= htmlspecialchars($book['member_phone']) ?></span>
-                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-sm mt-3 pt-3 border-t border-gray-200">
                                 <div class="flex items-center">
                                     <i class="fas fa-hashtag text-indigo-600 mr-2 w-4"></i>
                                     <span class="text-gray-600">Issue #<?= $book['issue_id'] ?></span>

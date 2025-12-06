@@ -129,7 +129,7 @@ include '../includes/header.php';
 <div id="slideOverBackdrop" class="hidden fixed inset-0 bg-black/50 z-40 transition-opacity" onclick="closeSlideOver()"></div>
 <div id="slideOverPanel" class="hidden fixed top-0 right-0 h-full w-full md:w-[600px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 overflow-y-auto">
   <div class="sticky top-0 glass-blue px-6 py-4 z-10 border-b border-blue-200/30">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between rounded-lg ">
       <h2 class="text-xl font-bold flex items-center text-gray-900">
         <i class="fas fa-book mr-3 text-blue-600"></i>
         <span id="slideOverTitle">Add New Book</span>

@@ -328,25 +328,31 @@ document.getElementById('memberSearch').addEventListener('input', function() {
         if (data.length === 0) {
           resultsDiv.innerHTML = '<div class="p-4 text-center text-gray-500">No members with borrowed books found</div>';
         } else {
-          resultsDiv.innerHTML = data.map(member => `
-            <div onclick='loadMemberBorrows(${member.member_id}, "${member.full_name.replace(/'/g, "\\'")}",  "${member.email}", "${member.phone}")' 
-                 class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                    ${member.full_name.charAt(0)}
+          resultsDiv.innerHTML = data.map(member => {
+            const photoHtml = member.profile_photo 
+              ? `<img src="../uploads/members/${member.profile_photo}" class="w-full h-full object-cover" alt="${member.full_name}">`
+              : `<div class="w-full h-full flex items-center justify-center font-semibold">${member.full_name.charAt(0)}</div>`;
+            
+            return `
+              <div onclick='loadMemberBorrows(${member.member_id}, "${member.full_name.replace(/'/g, "\\'")}",  "${member.email}", "${member.phone}", "${member.profile_photo || ""}")' 
+                   class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-600 overflow-hidden flex items-center justify-center text-white text-sm">
+                      ${photoHtml}
+                    </div>
+                    <div>
+                      <h4 class="font-semibold text-gray-800">${member.full_name}</h4>
+                      <p class="text-xs text-gray-600">${member.email}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 class="font-semibold text-gray-800">${member.full_name}</h4>
-                    <p class="text-xs text-gray-600">${member.email}</p>
-                  </div>
+                  <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-semibold">
+                    ${member.borrowed_count} book(s)
+                  </span>
                 </div>
-                <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-semibold">
-                  ${member.borrowed_count} book(s)
-                </span>
               </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
         
         resultsDiv.classList.remove('hidden');
@@ -397,13 +403,19 @@ document.getElementById('bookSearch').addEventListener('input', function() {
 });
 
 // Load Member Borrows
-function loadMemberBorrows(memberId, name, email, phone) {
+function loadMemberBorrows(memberId, name, email, phone, profilePhoto = '') {
   document.getElementById('memberSearch').value = '';
   document.getElementById('bookSearch').value = '';
   document.getElementById('memberResults').classList.add('hidden');
   document.getElementById('bookResults').classList.add('hidden');
   
-  document.getElementById('selectedMemberPhoto').textContent = name.charAt(0);
+  const photoDiv = document.getElementById('selectedMemberPhoto');
+  if (profilePhoto) {
+    photoDiv.innerHTML = `<img src="../uploads/members/${profilePhoto}" class="w-full h-full object-cover rounded-full" alt="${name}">`;
+  } else {
+    photoDiv.innerHTML = name.charAt(0);
+  }
+  
   document.getElementById('selectedMemberName').textContent = name;
   document.getElementById('selectedMemberInfo').textContent = `${email} • ${phone}`;
   

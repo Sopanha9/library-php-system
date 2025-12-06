@@ -24,7 +24,8 @@ try {
                 b.author as book_author,
                 m.full_name as member_name,
                 m.email as member_email,
-                m.phone as member_phone
+                m.phone as member_phone,
+                m.profile_photo
             FROM issued_books ib
             JOIN books b ON ib.book_id = b.book_id
             JOIN members m ON ib.member_id = m.member_id

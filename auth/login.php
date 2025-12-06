@@ -8,55 +8,110 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
+    
+    * { font-family: 'Inter', sans-serif; }
+    
+    body {
+      background: linear-gradient(135deg, #e8eef5 0%, #f5f7fa 50%, #dfe7f0 100%);
+      position: relative;
+      overflow: hidden;
     }
+    
+    /* Subtle animated background shapes */
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: float 25s ease-in-out infinite;
+    }
+    
     @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, -50px) scale(1.1); }
+      66% { transform: translate(-50px, 50px) scale(0.9); }
     }
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.95);
+    
+    /* Glassmorphism card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 60px rgba(10, 132, 255, 0.15);
+    }
+    
+    .glass-header {
+      background: rgba(10, 132, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(10, 132, 255, 0.1);
+    }
+    
+    .input-glass {
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(10, 132, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .input-glass:focus {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(10, 132, 255, 0.4);
+      box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.1);
+    }
+    
+    .btn-glass {
+      background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+      box-shadow: 0 8px 20px rgba(10, 132, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-glass:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(10, 132, 255, 0.4);
+    }
+    
+    .info-glass {
+      background: rgba(10, 132, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(10, 132, 255, 0.15);
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
   
-  <!-- Animated Background Elements -->
+  <!-- Subtle Background Shapes -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-float"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
-    <div class="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-400/10 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+    <div class="bg-shape w-96 h-96 bg-blue-400 top-0 -left-20" style="animation-delay: 0s;"></div>
+    <div class="bg-shape w-80 h-80 bg-indigo-400 bottom-0 -right-20" style="animation-delay: 8s;"></div>
+    <div class="bg-shape w-72 h-72 bg-purple-300 top-1/3 left-1/2" style="animation-delay: 16s;"></div>
   </div>
 
-  <div class="relative w-full max-w-md">
+  <div class="relative w-full max-w-md z-10">
     <!-- Logo Section -->
-    <div class="text-center mb-8 animate-float">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-2xl mb-4">
-        <i class="fas fa-book-open text-4xl text-indigo-600"></i>
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 glass-card rounded-3xl mb-4 transform hover:scale-110 transition-transform duration-300">
+        <i class="fas fa-book-open text-4xl bg-gradient-to-br from-blue-500 to-indigo-600 bg-clip-text text-transparent"></i>
       </div>
-      <h1 class="text-4xl font-bold text-white mb-2">Library System</h1>
-      <p class="text-indigo-100">Sign in to manage your library</p>
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">Library System</h1>
+      <p class="text-gray-600 font-medium">Sign in to manage your library</p>
     </div>
 
     <!-- Login Card -->
-    <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
+    <div class="glass-card rounded-3xl overflow-hidden">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6 text-white">
-        <h2 class="text-2xl font-bold flex items-center">
-          <i class="fas fa-sign-in-alt mr-3"></i>
+      <div class="glass-header px-8 py-6">
+        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+          <i class="fas fa-sign-in-alt mr-3 text-blue-600"></i>
           Welcome Back
         </h2>
-        <p class="text-indigo-100 text-sm mt-1">Enter your credentials to continue</p>
+        <p class="text-gray-600 text-sm mt-1">Enter your credentials to continue</p>
       </div>
 
       <!-- Body -->
       <div class="p-8">
         <?php if(isset($_GET['error'])): ?>
-          <div class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-4 flex items-start space-x-3">
+          <div class="mb-6 bg-red-50/80 backdrop-blur-sm border-l-4 border-red-500 rounded-xl p-4 flex items-start space-x-3">
             <i class="fas fa-exclamation-circle text-red-500 text-xl mt-0.5"></i>
             <div>
               <h3 class="font-semibold text-red-800">Login Failed</h3>
@@ -66,7 +121,7 @@
         <?php endif; ?>
         
         <?php if(isset($_GET['registered'])): ?>
-          <div class="mb-6 bg-green-50 border-l-4 border-green-500 rounded-lg p-4 flex items-start space-x-3">
+          <div class="mb-6 bg-green-50/80 backdrop-blur-sm border-l-4 border-green-500 rounded-xl p-4 flex items-start space-x-3">
             <i class="fas fa-check-circle text-green-500 text-xl mt-0.5"></i>
             <div>
               <h3 class="font-semibold text-green-800">Success!</h3>
@@ -79,24 +134,24 @@
           <!-- Username -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <i class="fas fa-user text-indigo-500 mr-2"></i>Username
+              <i class="fas fa-user text-blue-500 mr-2"></i>Username
             </label>
             <input type="text" name="username" required autofocus
-                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                   class="input-glass w-full px-4 py-3 rounded-xl outline-none"
                    placeholder="Enter your username">
           </div>
 
           <!-- Password -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <i class="fas fa-lock text-indigo-500 mr-2"></i>Password
+              <i class="fas fa-lock text-blue-500 mr-2"></i>Password
             </label>
             <div class="relative">
               <input type="password" name="password" id="password" required
-                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                     class="input-glass w-full px-4 py-3 rounded-xl outline-none pr-12"
                      placeholder="Enter your password">
               <button type="button" onclick="togglePassword()" 
-                      class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors">
                 <i class="fas fa-eye" id="toggleIcon"></i>
               </button>
             </div>
@@ -105,10 +160,10 @@
           <!-- Role -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <i class="fas fa-user-tag text-indigo-500 mr-2"></i>Login as
+              <i class="fas fa-user-tag text-blue-500 mr-2"></i>Login as
             </label>
             <select name="role" required
-                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all outline-none">
+                    class="input-glass w-full px-4 py-3 rounded-xl outline-none cursor-pointer">
               <option value="admin">👑 Administrator</option>
               <option value="librarian">📚 Librarian</option>
               <option value="member">👤 Member</option>
@@ -117,24 +172,24 @@
 
           <!-- Submit Button -->
           <button type="submit" 
-                  class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200">
+                  class="btn-glass w-full text-white font-semibold py-3.5 rounded-xl">
             <i class="fas fa-sign-in-alt mr-2"></i>Sign In
           </button>
         </form>
 
         <!-- Default Credentials -->
-        <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-indigo-100">
-          <p class="text-xs font-semibold text-indigo-900 mb-2 flex items-center">
-            <i class="fas fa-info-circle mr-2"></i>Default Test Credentials
+        <div class="mt-6 p-4 info-glass rounded-xl">
+          <p class="text-xs font-semibold text-gray-700 mb-2 flex items-center">
+            <i class="fas fa-info-circle mr-2 text-blue-500"></i>Default Test Credentials
           </p>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
               <span class="text-gray-600">Username:</span>
-              <code class="ml-1 font-bold text-indigo-700">admin</code>
+              <code class="ml-1 font-bold text-blue-600">admin</code>
             </div>
             <div>
               <span class="text-gray-600">Password:</span>
-              <code class="ml-1 font-bold text-indigo-700">password</code>
+              <code class="ml-1 font-bold text-blue-600">password</code>
             </div>
           </div>
         </div>
@@ -142,7 +197,7 @@
     </div>
 
     <!-- Footer -->
-    <p class="text-center text-white/80 text-sm mt-6">
+    <p class="text-center text-gray-600 text-sm mt-6">
       <i class="fas fa-shield-alt mr-2"></i>
       Secure library management system © 2025
     </p>
