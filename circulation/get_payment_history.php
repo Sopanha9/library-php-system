@@ -21,9 +21,9 @@ try {
             JOIN members m ON fp.member_id = m.member_id
             JOIN issued_books ib ON fp.issue_id = ib.issue_id
             JOIN books b ON ib.book_id = b.book_id
-            LEFT JOIN users u ON fp.recorded_by = u.user_id
-            WHERE DATE(fp.payment_date) BETWEEN ? AND ?
-            ORDER BY fp.payment_date DESC";
+            LEFT JOIN users u ON fp.paid_to = u.user_id
+            WHERE DATE(fp.paid_date) BETWEEN ? AND ?
+            ORDER BY fp.paid_date DESC";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$dateFrom, $dateTo]);
@@ -39,7 +39,7 @@ try {
     }
     
     // Calculate total
-    $totalAmount = array_sum(array_column($payments, 'amount'));
+    $totalAmount = array_sum(array_column($payments, 'amount_paid'));
 ?>
     <div class="mb-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-4">
         <div class="flex items-center justify-between">
@@ -75,12 +75,12 @@ try {
                 <?php foreach ($payments as $payment): ?>
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-4 py-3 text-sm">
-                        <div class="font-semibold text-gray-800"><?= date('M d, Y', strtotime($payment['payment_date'])) ?></div>
-                        <div class="text-xs text-gray-500"><?= date('h:i A', strtotime($payment['payment_date'])) ?></div>
+                        <div class="font-semibold text-gray-800"><?= date('M d, Y', strtotime($payment['paid_date'])) ?></div>
+                        <div class="text-xs text-gray-500"><?= date('h:i A', strtotime($payment['paid_date'])) ?></div>
                     </td>
                     <td class="px-4 py-3 text-sm">
                         <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded font-mono text-xs">
-                            <?= htmlspecialchars($payment['receipt_number']) ?>
+                            #<?= $payment['payment_id'] ?>
                         </span>
                     </td>
                     <td class="px-4 py-3 text-sm">
@@ -92,21 +92,12 @@ try {
                         <div class="text-xs text-gray-500"><?= htmlspecialchars($payment['book_author']) ?></div>
                     </td>
                     <td class="px-4 py-3 text-sm">
-                        <?php
-                        $methods = [
-                            'cash' => ['icon' => '💵', 'color' => 'green'],
-                            'card' => ['icon' => '💳', 'color' => 'blue'],
-                            'online' => ['icon' => '🌐', 'color' => 'purple'],
-                            'other' => ['icon' => '📝', 'color' => 'gray']
-                        ];
-                        $method = $methods[$payment['payment_method']] ?? $methods['other'];
-                        ?>
-                        <span class="px-2 py-1 bg-<?= $method['color'] ?>-100 text-<?= $method['color'] ?>-700 rounded text-xs">
-                            <?= $method['icon'] ?> <?= ucfirst($payment['payment_method']) ?>
+                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
+                            💵 Cash
                         </span>
                     </td>
                     <td class="px-4 py-3 text-sm text-right">
-                        <span class="font-bold text-green-700"><?= number_format($payment['amount'], 2) ?> Riel</span>
+                        <span class="font-bold text-green-700"><?= number_format($payment['amount_paid'], 2) ?> Riel</span>
                     </td>
                     <td class="px-4 py-3 text-sm text-gray-600">
                         <?= htmlspecialchars($payment['recorded_by_name'] ?? 'System') ?>

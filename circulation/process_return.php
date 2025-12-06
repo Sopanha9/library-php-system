@@ -70,26 +70,22 @@ try {
     // Update issued_books record
     $sql = "UPDATE issued_books SET 
                 return_date = ?,
-                book_condition_on_return = ?,
                 fine_amount = ?,
                 notes = ?,
                 returned_by = ?
             WHERE issue_id = ?";
     
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$returnDate, $bookCondition, $fine, $notes, $returnedBy, $issueId]);
+    $stmt->execute([$returnDate, $fine, $notes, $returnedBy, $issueId]);
     
     // Record payment if fine was paid
     $paymentAmount = $_POST['payment_amount'] ?? 0;
     if ($paymentAmount > 0) {
-        $paymentMethod = $_POST['payment_method'] ?? 'cash';
-        $receiptNumber = 'RCP-' . time() . '-' . $issueId;
-        
-        $sql = "INSERT INTO fine_payments (issue_id, member_id, amount, payment_method, payment_date, receipt_number, recorded_by)
-                VALUES (?, ?, ?, ?, NOW(), ?, ?)";
+        $sql = "INSERT INTO fine_payments (issue_id, member_id, amount_paid, paid_date, paid_to)
+                VALUES (?, ?, ?, NOW(), ?)";
         
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$issueId, $issue['member_id'], $paymentAmount, $paymentMethod, $receiptNumber, $returnedBy]);
+        $stmt->execute([$issueId, $issue['member_id'], $paymentAmount, $returnedBy]);
         
         // Update fine_paid in issued_books
         $stmt = $pdo->prepare("UPDATE issued_books SET fine_paid = fine_paid + ? WHERE issue_id = ?");
